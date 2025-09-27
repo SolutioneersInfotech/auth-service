@@ -45,7 +45,7 @@ router.post("/login", async (req: Request, res: Response) => {
     { expiresIn: "1d" }
   );
 
-  res.json({ token });
+  res.json({ token, user: { id: user._id, email: user.email, projectId: user.projectId } });
 });
 
 // Verify
