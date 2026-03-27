@@ -17,22 +17,22 @@ router.post("/signup", async (req: Request, res: Response) => {
 	if (existing) return res.status(400).json({ message: "User exists" });
 
 	const hashed = await bcrypt.hash(password, 10);
-	const user: IUser = new User({ email, password: hashed, projectId });
-	const savedUser = await user.save();
-  if (!savedUser) return res.status(500).json({ message: "Error saving user" });
+	const user: IUser = await User.create({ email, password: hashed, projectId });
 
-  const token = jwt.sign({ userId: user._id, email: user.email, projectId: user.projectId }, process.env.JWT_SECRET!, { expiresIn: "1d" });
+	if (!user) return res.status(500).json({ message: "Error saving user" });
 
-  if (!token) return res.status(500).json({ message: "Error generating token" });
-	res.json({ message: "Signup successful", user: savedUser, token });
+	const token = jwt.sign({ userId: user._id, email: user.email, projectId: user.projectId }, process.env.JWT_SECRET!, { expiresIn: "1d" });
+
+	if (!token) return res.status(500).json({ message: "Error generating token" });
+	res.status(201).json({ message: "Signup successful", user, token });
 });
 
 // Login
 router.post("/login", async (req: Request, res: Response) => {
 	const { email, password, projectId } = req.body;
-  if (!email || !password || !projectId) {
-    return res.status(400).json({ message: "All fields required" });
-  }
+	if (!email || !password || !projectId) {
+		return res.status(400).json({ message: "All fields required" });
+	}
 	const user = await User.findOne({ email, projectId });
 	if (!user) return res.status(400).json({ message: "User does not exist" });
 
