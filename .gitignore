@@ -1,2 +1,27 @@
 # Node modules folder ignore karne ke liye
 node_modules/
+# Build output ignore karne ke liye
+dist/
+build/
+# Log files ignore karne ke liye
+logs/
+*.log
+# Environment variables file ignore karne ke liye
+.env
+# OS generated files ignore karne ke liye
+.DS_Store
+Thumbs.db
+# IDE specific files ignore karne ke liye
+.vscode/
+.idea/
+# Test coverage reports ignore karne ke liye
+coverage/
+# Dependency directories ignore karne ke liye
+bower_components/
+# Temporary files ignore karne ke liye
+tmp/
+temp/
+#lock files ignore karne ke liye
+package-lock.json
+yarn.lock
+bun.lock
